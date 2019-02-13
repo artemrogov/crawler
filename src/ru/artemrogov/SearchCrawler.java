@@ -233,7 +233,7 @@ public class SearchCrawler extends JFrame
 
             public void actionPerformed(ActionEvent e) {
                 actionSearch();
-            }
+            } ///
 
         });
 
@@ -392,7 +392,8 @@ public class SearchCrawler extends JFrame
             crawling = false;
             return;
         }
-        ArrayList<String> errorList = new ArrayList<String>();
+
+        ArrayList<String> errorList = new ArrayList<>();
 
 
         // Проверить ввод начального адреса (URL).
@@ -411,6 +412,7 @@ public class SearchCrawler extends JFrame
            количества адресов и что это число. */
 
         int maxUrls = 0;
+
         String max = ((String) maxComboBox.getSelectedItem()).trim();
 
         if (max.length() > 0) {
@@ -427,11 +429,12 @@ public class SearchCrawler extends JFrame
         }
         // Проверить, что файл с журналом совпадений существует.
         String logFile = logTextField.getText().trim();
+
         if (logFile.length() < 1) {
             errorList.add("Missing Matches Log File.");
         }
 
-        // Проверить, что введена стока для поиска.
+        // Проверить, что введена строка для поиска.
         String searchString = searchTextField.getText().trim();
 
         if (searchString.length() < 1) {
@@ -668,7 +671,8 @@ public class SearchCrawler extends JFrame
 
         // Если в кэш-памяти нет списка, загрузить его.
         if (disallowList == null) {
-            disallowList = new ArrayList<String>();
+
+            disallowList = new ArrayList<>();
             try {
                 URL robotsFileUrl = new URL("http://" + host + "/robots.txt");
 
@@ -725,7 +729,6 @@ public class SearchCrawler extends JFrame
         return true;
     }
 
-    // Загрузить страницу с заданным URL.
 
     /**
      * Загружает страницу с заданным URL
