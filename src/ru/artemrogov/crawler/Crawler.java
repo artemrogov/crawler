@@ -2,6 +2,7 @@ package ru.artemrogov.crawler;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,10 +26,7 @@ public abstract class Crawler {
 
 
 
-    public Crawler(String startUrl, int maxUrls) {
-
-        this.startUrl = startUrl;
-        this.maxUrls = maxUrls;
+    public Crawler() {
 
     }
 
@@ -174,6 +172,7 @@ public abstract class Crawler {
             // Считать в буфер.
             String line;
             StringBuffer pageBuffer = new StringBuffer();
+
             while ((line = reader.readLine()) != null) {
 
                 pageBuffer.append(line);
@@ -188,7 +187,19 @@ public abstract class Crawler {
         return null;
     }
 
+    /**
+     * Display console
+     * @param url
+     * @return
+     * @throws MalformedURLException
+     */
 
+    public String pagelines(String url) throws MalformedURLException {
+
+        String result = downloadPage( new URL(url));
+
+        return result;
+    }
 
     /**
      * Удалить сиволы www из url адреса,
@@ -215,7 +226,7 @@ public abstract class Crawler {
      * @param limitHost лимит обхода
      * @return Список проанализированных ссылок
      */
-    private ArrayList<String> retrieveLinks(URL pageUrl, String pageContents, HashSet<String> crawledList, boolean limitHost)
+    public ArrayList<String> retrieveLinks(URL pageUrl, String pageContents, HashSet<String> crawledList, boolean limitHost)
     {
         // Компилировать ссылки шаблонов совпадений.
         Pattern p = Pattern.compile("<a\\s+href\\s*=\\s*\"?(.*?)[\"|>]", Pattern.CASE_INSENSITIVE);
@@ -229,6 +240,7 @@ public abstract class Crawler {
             String link = m.group(1).trim();
 
             // Если ссылки пустые, то пропустить ссылки
+
             if (link.length() < 1) {
                 continue;
             }
@@ -249,6 +261,9 @@ public abstract class Crawler {
                 continue;
             }
 
+            if (link.indexOf("tel:") !=-1){
+                continue;
+            }
 
             // Пропустить ссылки на сценарии JavaScript.
             if (link.toLowerCase().indexOf("javascript") != -1) {
@@ -327,7 +342,7 @@ public abstract class Crawler {
      * @param caseSensitive учитывать регистр клавиатуры
      * @return
      */
-    private boolean searchStringMatches(String pageContents, String searchString, boolean caseSensitive)
+    public boolean searchStringMatches(String pageContents, String searchString, boolean caseSensitive)
     {
         String searchContents = pageContents;
 
@@ -380,6 +395,25 @@ public abstract class Crawler {
      * @param url адрес страницы
      */
     public abstract void addMatch(String url);
+
+
+    /**
+     *
+     * Выполнить перебор страниц(запустить перебор страниц)
+     *
+     * @param startUrl
+     * @param maxUrls
+     * @param limitHost
+     * @param searchString
+     * @param caseSensitive
+     */
+    public abstract void crawl(String startUrl,
+                               int maxUrls,
+                               boolean limitHost,
+                               String searchString,
+                               boolean caseSensitive
+    );
+
 
 
 

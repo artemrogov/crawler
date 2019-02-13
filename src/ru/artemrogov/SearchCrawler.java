@@ -478,6 +478,7 @@ public class SearchCrawler extends JFrame
     {
         // Начать поиск в новом потоке.
         Thread thread = new Thread(new Runnable() {
+
             public void run() {
                 // Отобразить песочные часы на время работы поискового червя.
                 setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -818,6 +819,9 @@ public class SearchCrawler extends JFrame
                 continue;
             }
 
+            if (link.indexOf("tel:")!=-1){
+                continue;
+            }
 
             // Пропустить ссылки на сценарии JavaScript.
             if (link.toLowerCase().indexOf("javascript") != -1) {
@@ -946,6 +950,7 @@ public class SearchCrawler extends JFrame
     {
        // Установить список поиска.
         HashSet<String> crawledList = new HashSet<>();
+
         LinkedHashSet<String> toCrawlList = new LinkedHashSet<>();
 
         // Добавить начальный URL в список поиска.
@@ -1033,8 +1038,7 @@ public class SearchCrawler extends JFrame
 
        SearchCrawler crawler = new SearchCrawler();
 
-       crawler.show();
-
+        crawler.setVisible(true);
 
 
     }
